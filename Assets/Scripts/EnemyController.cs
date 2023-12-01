@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AI.SteeringBehaviours;
 public class EnemyController : Stats
 {
-    [SerializeField] protected GameObject playerRefences;
-    [SerializeField] float maxForce;
+    [SerializeField] protected PlayerController playerRefences;
+    [SerializeField] protected float maxForce;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        playerRefences = FindObjectOfType<PlayerController>();
+    }
     private void FixedUpdate()
     {
-        rb2d.velocity = SteeringBehaviours.Seek(new Vector2(transform.position.x, transform.position.y),new Vector2(rb2d.velocity.x,rb2d.velocity.y),
-            new Vector2(playerRefences.transform.position.x, playerRefences.transform.position.y),velocity,maxForce);
+        Movement();
+       
     }
     
+    protected virtual void Movement(){}
 
 
 }
