@@ -1,18 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerController : MonoBehaviour
+using UnityEngine.InputSystem;
+public class PlayerController : Stats
 {
-    // Start is called before the first frame update
+    [Header("Movimientos")]
+    public PlayerInput playerInput;
+    Vector2 objetivo;
+
     void Start()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        playerInput = GetComponent<PlayerInput>();
+    }
+
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnMove(InputAction.CallbackContext value)
     {
         
+        if (value.performed)
+        {
+            Debug.Log("Me muevo");
+            Vector2 inputMovement = value.ReadValue<Vector2>();
+            rb2d.velocity = inputMovement * velocity;
+        }
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+        }
+        
+
+        
+    }
+    public void OnAim(InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            Debug.Log("Estoy apuntando");
+            Vector2 tmp = value.ReadValue<Vector2>();
+            objetivo = Camera.main.ScreenToWorldPoint(tmp);
+        }
+        
+    }
+    public void OnAttack1(InputAction.CallbackContext value)
+    {
+        if (value.started)
+        {
+            Debug.Log("Ataack1");
+        }
+
+    }
+    private void FixedUpdate()
+    {
+        float anguloRadianes = Mathf.Atan2(objetivo.y - transform.position.y, objetivo.x - transform.position.x);
+        float anguloGrados = (180 / Mathf.PI) * anguloRadianes - 90;
+        transform.rotation = Quaternion.Euler(0, 0, anguloGrados);
     }
 }
