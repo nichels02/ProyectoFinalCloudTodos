@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Stats : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] protected float _life;
+    [SerializeField] protected float velocity;
+    [SerializeField] protected string _name;
+    [SerializeField] protected Rigidbody2D rb2d;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
 
-    // Update is called once per frame
+    public event Action<float> OnLifeUpdated;
+    public event Action OnPlayerDeath;
+
+    protected virtual void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
     void Update()
     {
         
+    }
+    protected virtual void TakeDamage(float damageAmount)
+    {
+        _life -= damageAmount;
+        OnLifeUpdated?.Invoke(_life);
+
+        if (_life <= 0)
+        {
+            OnPlayerDeath?.Invoke();
+        }
     }
 }
