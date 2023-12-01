@@ -4,7 +4,7 @@ using UnityEngine;
 using AI.SteeringBehaviours;
 public class EnemyController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] SteeringBehaviours steeringBehaviours;
     void Start()
     {
         
