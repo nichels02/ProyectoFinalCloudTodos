@@ -22,7 +22,7 @@ public class Stats : MonoBehaviour
     {
         
     }
-    protected virtual void TakeDamage(float damageAmount)
+    protected virtual void UpdateLife(float damageAmount)
     {
         _life -= damageAmount;
         OnLifeUpdated?.Invoke(_life);
